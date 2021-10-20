@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import './App.css';
-import Axios from 'axios';
 import PokeballGif from './pokeball.gif';
 
 function App() {
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [pokemonName, setPokemonName] = useState("");
+
   const [pokemonChosen, setPokemonChosen] = useState(false);
+
   const [pokemon, setPokemon] = useState({
     name: "", 
     species: "", 
@@ -17,22 +20,24 @@ function App() {
     type: "",
   });
 
- 
-  const searchPokemon = () => {
-    setIsLoading(true);
-    Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then(
-      (response) => {
-      setPokemon({
-        name: pokemonName, 
-        species: response.data.species.name, 
-        img: response.data.sprites.front_default, 
-        hp: response.data.stats[0].base_stat,
-        attack: response.data.stats[1].base_stat,
-        defense: response.data.stats[2].base_stat,
-        type: response.data.types[0].type.name,
-      });
-      setPokemonChosen(true);
-      // setIsLoading(false)
+  function fetchData() {
+      setIsLoading(true);
+      fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then(
+        (res) => {
+          res.json().then((response) => {
+            console.log(response);
+            setPokemon({
+              name: response.name, 
+              species: response.species.name, 
+              img: response.sprites.front_default, 
+              hp: response.stats[0].base_stat,
+              attack: response.stats[1].base_stat,
+              defense: response.stats[2].base_stat,
+              type: response.types[0].type.name,
+          });
+          setPokemonChosen(true);
+          setIsLoading(false);
+          });
     });
   }
 
@@ -41,14 +46,13 @@ function App() {
       <div className="TitleSection">
         <h1>Pokemon Stats</h1>
         <input type="text" onChange={(event) => {setPokemonName(event.target.value)}}/>
-        <button onClick={searchPokemon}>Search Pokemon</button>
+
+        { isLoading ? <img src={PokeballGif} alt="loading" /> : null}
+        <button onClick={fetchData}>Fetch Pokemon</button>
       </div>
       <div className="DisplaySection">
-        {!isLoading && !pokemonChosen ? (
-          <>
+        {!pokemonChosen ? (
           <h1>Please choose a pokemon</h1>
-          <img src={PokeballGif} alt="loading" />
-          </>
         ) : (
           <>
           <h1>{pokemon.name}</h1>
