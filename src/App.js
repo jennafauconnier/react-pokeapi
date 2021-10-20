@@ -19,6 +19,7 @@ function App() {
 
  
   const searchPokemon = () => {
+    setIsLoading(true);
     Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then(
       (response) => {
       setPokemon({
@@ -31,7 +32,7 @@ function App() {
         type: response.data.types[0].type.name,
       });
       setPokemonChosen(true);
-      setIsLoading(false)
+      // setIsLoading(false)
     });
   }
 
@@ -40,7 +41,7 @@ function App() {
       <div className="TitleSection">
         <h1>Pokemon Stats</h1>
         <input type="text" onChange={(event) => {setPokemonName(event.target.value)}}/>
-        <button onClick={searchPokemon && setIsLoading}>Search Pokemon</button>
+        <button onClick={searchPokemon}>Search Pokemon</button>
       </div>
       <div className="DisplaySection">
         {!isLoading && !pokemonChosen ? (
