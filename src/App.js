@@ -1,69 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import PokeballGif from './pokeball.gif';
+import PokemonCard from './components/PokemonCard';
+
 
 function App() {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [allPokemons, setAllPokemons] = useState([]);
+  const [loadMore, setLoadMore] = useState('https://pokeapi.co/api/v2/pokemon?limit=20');
 
-  const [pokemonName, setPokemonName] = useState("");
+  const getAllPokemons = async () => {
+    const res = await fetch(loadMore);
+    const data = await res.json();
 
-  const [pokemonChosen, setPokemonChosen] = useState(false);
+    setLoadMore(data.next)
+  
 
-  const [pokemon, setPokemon] = useState({
-    name: "", 
-    species: "", 
-    img: "", 
-    hp: "",
-    attack: "",
-    defense: "",
-    type: "",
-  });
+    function createPokemonObject (result) {
+      result.forEach( async (pokemon) => {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
+        const data = await res.json();
 
-  function fetchData() {
-      setIsLoading(true);
-      fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then(
-        (res) => {
-          res.json().then((response) => {
-            console.log(response);
-            setPokemon({
-              name: response.name, 
-              species: response.species.name, 
-              img: response.sprites.front_default, 
-              hp: response.stats[0].base_stat,
-              attack: response.stats[1].base_stat,
-              defense: response.stats[2].base_stat,
-              type: response.types[0].type.name,
-          });
-          setPokemonChosen(true);
-          setIsLoading(false);
-          });
-    });
+        setAllPokemons(currentList => [...currentList, data]);
+      })
+    }
+    createPokemonObject(data.results);
+    await console.log(allPokemons);
   }
 
-  return (
-    <div className="App">
-      <div className="TitleSection">
-        <h1>Pokemon Stats</h1>
-        <input type="text" onChange={(event) => {setPokemonName(event.target.value)}}/>
+  useEffect(() => {
+    getAllPokemons();
+  }, [])
 
-        { isLoading ? <img src={PokeballGif} alt="loading" /> : null}
-        <button onClick={fetchData}>Fetch Pokemon</button>
-      </div>
-      <div className="DisplaySection">
-        {!pokemonChosen ? (
-          <h1>Please choose a pokemon</h1>
-        ) : (
-          <>
-          <h1>{pokemon.name}</h1>
-          <img src={pokemon.img} alt="" />
-          <h3>Species: {pokemon.species}</h3>
-          <h3>Type: {pokemon.type}</h3>
-          <h4>Hp: {pokemon.hp}</h4>
-          <h4>Attack: {pokemon.attack}</h4>
-          <h4>Defense: {pokemon.defense}</h4>
-          </>
-        )}
+
+
+  return (
+    <div className="app-container">
+      <h1>Pokemon Evolution</h1>
+      <div className="pokemon-container">
+        <div className="all-containers">
+          {allPokemons.map(pokemon => <li>{pokemon.name}</li>)}
+        </div>
+        <PokemonCard />
+        <button className="load-more">Load More</button>
       </div>
     </div>
   );
