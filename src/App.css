@@ -8,34 +8,55 @@ code {
     monospace;
 }
 .rock {
-  background-color: rgb(148, 81, 81);
+  background-color: #A38C22;
 }
 .ghost {
-  background-color: rgb(247, 247, 247);
+  background-color: #7C62A3;
+}
+.dragon {
+  background-color: #F16E57;
+}
+.dark {
+  background-color: #707070;
 }
 .electric {
-  background-color: rgb(255, 255, 161);
+  background-color: #EED535;
 }
 .bug {
-  background-color: #F6D6A7;
+  background-color: #729F3F;
 }
 .poison {
   background-color: #e0a7f6;
 }
+.ice {
+  background-color: #51C4E7;
+}
 .normal {
-  background-color: #F4F4F4;
+  background-color: #B5B8B1;
 }
 .fairy {
-  background-color: rgba(255, 192, 203, 0.863);
+  background-color: #FDB9E9;
 }
 .fire {
-  background-color: #FBE3DF;
+  background-color: #FD7D25;
+}
+.fighting {
+  background-color: #D56723;
 }
 .grass {
-  background-color:#E2F9E1;
+  background-color:#9BCC50;
 }
 .water {
-  background-color:#E0F1FD;
+  background-color:#49B8E7;
+}
+.ground {
+  background-color: #F7DE40;
+}
+.psychic {
+  background-color: #F366B9;
+}
+.steel {
+  background-color: #9EB7B8;
 }
 
 .app-container {
