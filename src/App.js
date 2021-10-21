@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import PokemonCard from './components/PokemonCard';
+import PokemonThumb from './components/PokemonThumb';
 
 
 function App() {
@@ -38,10 +39,17 @@ function App() {
       <h1>Pokemon Evolution</h1>
       <div className="pokemon-container">
         <div className="all-containers">
-          {allPokemons.map(pokemon => <li>{pokemon.name}</li>)}
+          {allPokemons.map((pokemonStats, index) => 
+            <PokemonThumb
+            key={index} 
+            id={pokemonStats.id}
+            name={pokemonStats.name}
+            image={pokemonStats.sprites.other.dream_world.front_default}
+            type={pokemonStats.types[0].type.name}
+            />
+          )}
         </div>
-        <PokemonCard />
-        <button className="load-more">Load More</button>
+        <button className="load-more" onClick={() => getAllPokemons()}>Load More</button>
       </div>
     </div>
   );

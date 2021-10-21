@@ -1,8 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const PokemonThumnail = ({id, name, image, type}) => {
+const PokemonThumb = ({id, name, image, type}) => {
+
+    const style = `thumb-container ${type}`
+
     return (
-        <div className="thumb-container">
+        <div className={style}>
             <div className="number">
                 <small>#0{id}</small>
             </div>
@@ -16,4 +19,4 @@ const PokemonThumnail = ({id, name, image, type}) => {
     )
 }
 
-export default PokemonThumnail
+export default PokemonThumb;
